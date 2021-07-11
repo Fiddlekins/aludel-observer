@@ -22,10 +22,10 @@ for (const address of Object.keys(knownRewardPrograms)) {
 async function update() {
 	nextUpdateTime += pollInterval;
 	const crucibleRewards = await getCrucibleRewards(crucibleId);
-	for (const {delegate, rewards} of crucibleRewards) {
+	for (const {delegate, rewardPoolShare, rewards} of crucibleRewards) {
 		if (!rewardHistory[delegate]) {
 			rewardHistory[delegate] = [];
-			const headers = ['timestamp'];
+			const headers = ['timestamp', 'reward share'];
 			for (const {address} of rewards) {
 				const {name} = await tokenData.getToken(address);
 				headers.push(name);
@@ -33,7 +33,7 @@ async function update() {
 			rewardHistory[delegate].push(headers);
 		}
 		const history = rewardHistory[delegate];
-		const record = [Date.now()];
+		const record = [Date.now(), rewardPoolShare];
 		for (const {address, balance} of rewards) {
 			const {decimals} = await tokenData.getToken(address);
 			const value = bigNumberishToNumber(balance, decimals);

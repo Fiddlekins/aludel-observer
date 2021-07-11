@@ -36,14 +36,16 @@ export default async function getCrucibleRewards(crucibleId) {
 			const rewardTokens = [aludelData.rewardToken, ...bonusTokens];
 			const balanceChecker = getContract(contracts.BalanceChecker, provider);
 
-			const [rewardPoolBalances, vaultData, currentVaultReward] =
+			const [rewardPoolBalances, vaultData, currentVaultReward, currentVaultStakeUnits, currentTotalStakeUnits] =
 				await Promise.all([
 					balanceChecker.balances([aludelData.rewardPool], rewardTokens),
 					aludel.getVaultData(crucibleId),
-					aludel.getCurrentVaultReward(crucibleId)
+					aludel.getCurrentVaultReward(crucibleId),
+					aludel.getCurrentVaultStakeUnits(crucibleId),
+					aludel.getCurrentTotalStakeUnits()
 				]);
 
-			const totalRewardTokenBalance = rewardPoolBalances[0];
+			const [totalRewardTokenBalance] = rewardPoolBalances;
 			const rewards = rewardPoolBalances.map((totalTokenBalance, tokenIndex) => {
 				const balance = totalTokenBalance.mul(currentVaultReward).div(totalRewardTokenBalance);
 				return {
@@ -51,10 +53,12 @@ export default async function getCrucibleRewards(crucibleId) {
 					balance
 				};
 			});
+			const rewardPoolShare = bigNumberishToNumber(currentVaultStakeUnits) / bigNumberishToNumber(currentTotalStakeUnits);
 			return {
 				delegate: delegate.toLowerCase(),
 				subscribedTokenAddress: token.toLowerCase(),
 				subscribedTokenBalance: vaultData.totalStake,
+				rewardPoolShare,
 				rewards
 			};
 		})
