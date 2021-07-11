@@ -1,0 +1,8 @@
+{
+  "id": "61360a107f69da49bd0c85444336bcf1",
+  "secret": "c0f4c66d0ae06a9e79cbf93946b1da86",
+  "endpoints": {
+    "https": "https://mainnet.infura.io/v3/61360a107f69da49bd0c85444336bcf1",
+    "ws": "wss://mainnet.infura.io/ws/v3/61360a107f69da49bd0c85444336bcf1"
+  }
+}
