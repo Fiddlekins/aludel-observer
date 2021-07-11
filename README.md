@@ -22,5 +22,5 @@ The output `.tsv` files have the timestamp of first save included in their filen
 
 The default poll rate is 20 samples per day. This can be adjusted by editing the `pollRate` variable in `index.js`.
 
-Output .tsv` files can be opened with a text editor, and their content pasted into a spreadsheet.
+Output `.tsv` files can be opened with a text editor, and their content pasted into a spreadsheet.
 Google Sheets in particular will automatically split it across columns properly.
